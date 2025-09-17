@@ -1,0 +1,25 @@
+Agente,Rol,Counter 1,Counter 2
+Brimstone,Controller,Phoenix,Gekko
+Omen,Controller,Reyna,Raze
+Viper,Controller,Skye,Jett
+Astra,Controller,Neon,Phoenix
+Harbor,Controller,Raze,KAY/O
+Clove,Controller,Fade,Sova
+Jett,Duelist,KAY/O,Yoru
+Raze,Duelist,Cypher,Breach
+Phoenix,Duelist,Viper,Clove
+Reyna,Duelist,Iso,Phoenix
+Yoru,Duelist,Phoenix,Fade
+Neon,Duelist,Iso,Deadlock
+Iso,Duelist,Harbor,Gekko
+Sova,Initiator,Killjoy,Breach
+Skye,Initiator,Fade,Brimstone
+KAY/O,Initiator,Killjoy,Sova
+Breach,Initiator,Deadlock,Viper
+Fade,Initiator,Killjoy,Deadlock
+Gekko,Initiator,Iso,Omen
+Sage,Sentinel,KAY/O,Omen
+Cypher,Sentinel,Neon,Harbor
+Killjoy,Sentinel,Astra,Sova
+Chamber,Sentinel,Brimstone,Killjoy
+Deadlock,Sentinel,Cypher,Brimstone

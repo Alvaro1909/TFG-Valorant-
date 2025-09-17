@@ -1,76 +1,76 @@
-Nombre,Equipo,Nacionalidad,ACS,Kills/Round,Deaths/Round,Open Kills/Round,Headshots/Round,Kill cost,Mejor mapa (ACS),Peor mapa (ACS),Rol recomendado,Puntuación general (1–100),Ascent,Split,Fracture,Breeze,Haven,Icebox,Sunset,Bind,Pearl,Lotus
-Jamppi,BBL Esports,Finland,215.0,0.76,0.71,0.1,0.67,4750,Fracture (225),Sunset (190),Flex,84,75,74,73,72,71,70,69,68,67,66
-LewN,BBL Esports,Turkey,210.0,0.74,0.7,0.11,0.65,4700,Split (220),Icebox (185),Duelist,82,73,72,71,70,69,68,67,66,65,64
-MAGNUM,BBL Esports,Czechia,178.0,0.62,0.68,0.05,0.55,5050,Ascent (188),Pearl (160),Sentinel,71,62,61,60,59,58,57,56,55,54,53
-PROFEK,BBL Esports,Turkey,190.0,0.66,0.69,0.07,0.58,4900,Bind (200),Breeze (170),Controller,76,67,66,65,64,63,62,61,60,59,58
-sociablee,BBL Esports,Turkey,196.0,0.68,0.69,0.09,0.6,4850,Haven (205),Lotus (180),Initiator,79,69,68,67,66,65,64,63,62,61,60
-Crewen,BBL PCIFIC,Turkey,185.0,0.64,0.68,0.07,0.58,4950,Ascent (195),Lotus (170),Initiator,74,65,64,63,62,61,60,59,58,57,56
-Lar0k,BBL PCIFIC,Turkey,182.0,0.63,0.68,0.06,0.56,4980,Lotus (192),Sunset (170),Sentinel,73,64,63,62,61,60,59,58,57,56,55
-Loita,BBL PCIFIC,Turkey,198.0,0.67,0.69,0.09,0.61,4880,Split (208),Pearl (180),Duelist,78,69,68,67,66,65,64,63,62,61,60
-Rose,BBL PCIFIC,Turkey,176.0,0.61,0.67,0.06,0.55,5000,Bind (186),Haven (160),Controller,70,61,60,59,58,57,56,55,54,53,52
-lovers_rock,BBL PCIFIC,Turkey,190.0,0.66,0.69,0.08,0.6,4900,Fracture (200),Breeze (175),Flex,77,68,67,66,65,64,63,62,61,60,59
-Doma,Enterprise Esports,UK,200.0,0.68,0.69,0.09,0.61,4850,Ascent (210),Icebox (180),Flex,80,71,70,69,68,67,66,65,64,63,62
-Kiles,Enterprise Esports,Spain,185.0,0.64,0.68,0.07,0.58,4950,Haven (195),Sunset (170),Sentinel,74,65,64,63,62,61,60,59,58,57,56
-jas,Enterprise Esports,Czechia,182.0,0.63,0.68,0.06,0.57,4950,Bind (192),Pearl (170),Controller,73,64,63,62,61,60,59,58,57,56,55
-starki,Enterprise Esports,Czechia,190.0,0.66,0.69,0.08,0.6,4900,Split (200),Lotus (175),Initiator,77,68,67,66,65,64,63,62,61,60,59
-zeek,Enterprise Esports,Poland,210.0,0.72,0.7,0.11,0.66,4800,Fracture (220),Breeze (185),Duelist,82,73,72,71,70,69,68,67,66,65,64
-Alfajer,Fnatic,Turkey,228.0,0.78,0.7,0.11,0.7,4700,Breeze (240),Icebox (205),Duelist,88,80,78,75,72,74,70,71,69,67,68
-Boaster,Fnatic,United Kingdom,174.0,0.6,0.65,0.04,0.5,5000,Lotus (185),Haven (160),Controller,70,62,61,60,58,57,55,54,53,52,50
-Chronicle,Fnatic,Russia,216.0,0.72,0.69,0.08,0.62,4557,Ascent (230),Split (198),Initiator,85,76,74,73,72,71,70,69,68,67,66
-crashies,Fnatic,USA,185.0,0.65,0.67,0.07,0.58,4800,Split (195),Bind (170),Sentinel,74,65,64,63,62,61,60,59,58,57,56
-kaajak,Fnatic,Finland,195.0,0.68,0.68,0.09,0.6,4850,Pearl (205),Fracture (180),Initiator,78,68,67,66,65,64,63,62,61,60,59
-JonahP,G2 Esports,USA,188.0,0.64,0.67,0.08,0.58,4900,Ascent (198),Lotus (170),Initiator,75,66,65,64,63,62,61,60,59,58,57
-jawgemo,G2 Esports,USA,232.0,0.8,0.71,0.12,0.72,4650,Fracture (245),Pearl (200),Duelist,89,82,80,78,76,74,72,71,70,69,68
-leaf,G2 Esports,USA,225.0,0.78,0.7,0.11,0.68,4700,Split (235),Icebox (200),Duelist,87,79,77,75,73,71,69,68,67,66,65
-trent,G2 Esports,USA,182.0,0.63,0.67,0.06,0.57,4950,Haven (192),Fracture (170),Sentinel,73,64,63,62,61,60,59,58,57,56,55
-valyn,G2 Esports,USA,180.0,0.62,0.66,0.05,0.55,5100,Bind (190),Breeze (160),Controller,72,63,62,61,60,59,58,57,56,55,54
-Cloud,GIANTX,UK,202.0,0.69,0.69,0.08,0.61,4900,Lotus (212),Fracture (180),Initiator,79,70,69,68,67,66,65,64,63,62,61
-Flickless,GIANTX,Spain,205.0,0.7,0.69,0.1,0.64,4800,Split (215),Icebox (180),Duelist,80,71,70,69,68,67,66,65,64,63,62
-GRUBINHO,GIANTX,Spain,176.0,0.61,0.67,0.06,0.55,5000,Bind (185),Haven (160),Controller,70,61,60,59,58,57,56,55,54,53,52
-ara,GIANTX,Spain,188.0,0.64,0.67,0.07,0.58,4950,Ascent (198),Pearl (170),Initiator,75,66,65,64,63,62,61,60,59,58,57
-westside,GIANTX,Spain,183.0,0.63,0.68,0.06,0.56,4980,Haven (193),Sunset (170),Sentinel,73,64,63,62,61,60,59,58,57,56,55
-Nami,GIANTX GC,Spain,208.0,0.71,0.7,0.1,0.65,4820,Breeze (218),Pearl (190),Duelist,81,72,71,70,69,68,67,66,65,64,63
-Smurfette,GIANTX GC,Turkey,212.0,0.72,0.7,0.11,0.66,4800,Fracture (222),Haven (185),Duelist,83,74,73,72,71,70,69,68,67,66,65
-eva,GIANTX GC,Spain,180.0,0.62,0.67,0.05,0.56,5000,Bind (190),Icebox (165),Controller,72,63,62,61,60,59,58,57,56,55,54
-ness,GIANTX GC,Spain,184.0,0.63,0.68,0.06,0.57,4950,Split (194),Sunset (170),Sentinel,74,65,64,63,62,61,60,59,58,57,56
-sarah,GIANTX GC,Spain,192.0,0.66,0.69,0.08,0.6,4900,Ascent (202),Lotus (176),Initiator,77,68,67,66,65,64,63,62,61,60,59
-ComeBack,Gentle Mates,France,180.0,0.62,0.67,0.05,0.56,5000,Bind (190),Icebox (165),Sentinel,72,63,62,61,60,59,58,57,56,55,54
-Minny,Gentle Mates,France,186.0,0.65,0.68,0.07,0.58,4950,Ascent (196),Lotus (170),Controller,74,65,64,63,62,61,60,59,58,57,56
-Proxh,Gentle Mates,France,188.0,0.64,0.68,0.07,0.58,4900,Fracture (198),Sunset (172),Flex,75,66,65,64,63,62,61,60,59,58,57
-Veqaj,Gentle Mates,France,208.0,0.71,0.7,0.1,0.65,4820,Breeze (218),Pearl (190),Duelist,81,72,71,70,69,68,67,66,65,64,63
-kamyk,Gentle Mates,France,192.0,0.66,0.69,0.08,0.6,4900,Split (202),Haven (176),Initiator,77,68,67,66,65,64,63,62,61,60,59
-Avez,Karmine Corp,France,185.0,0.64,0.68,0.06,0.58,5000,Haven (195),Split (170),Controller,74,65,64,63,62,61,60,59,58,57,56
-SUYGETSU,Karmine Corp,Russia,180.0,0.62,0.67,0.05,0.56,5100,Pearl (190),Icebox (165),Sentinel,72,63,62,61,60,59,58,57,56,55,54
-Saadhak,Karmine Corp,Brazil,200.0,0.68,0.69,0.09,0.61,4850,Bind (210),Sunset (180),Flex,80,71,70,69,68,67,66,65,64,63,62
-marteen,Karmine Corp,France,190.0,0.66,0.69,0.08,0.6,4900,Ascent (200),Lotus (175),Initiator,77,68,67,66,65,64,63,62,61,60,59
-pyrolll,Karmine Corp,France,212.0,0.73,0.7,0.11,0.66,4780,Fracture (222),Breeze (185),Duelist,83,74,73,72,71,70,69,68,67,66,65
-Glance,Karmine Corp GC,France,184.0,0.63,0.68,0.06,0.57,4950,Bind (194),Lotus (170),Controller,74,65,64,63,62,61,60,59,58,57,56
-Jiex,Karmine Corp GC,France,210.0,0.72,0.7,0.11,0.66,4800,Split (220),Pearl (185),Duelist,82,73,72,71,70,69,68,67,66,65,64
-alkyia,Karmine Corp GC,France,192.0,0.66,0.69,0.08,0.6,4900,Ascent (202),Breeze (178),Initiator,77,68,67,66,65,64,63,62,61,60,59
-anesilia,Karmine Corp GC,France,188.0,0.64,0.68,0.07,0.58,4900,Fracture (198),Sunset (172),Flex,75,66,65,64,63,62,61,60,59,58,57
-safiaa,Karmine Corp GC,France,180.0,0.62,0.67,0.05,0.56,5000,Haven (190),Icebox (165),Sentinel,72,63,62,61,60,59,58,57,56,55,54
-ANGE1,Natus Vincere,Ukraine,178.0,0.61,0.66,0.05,0.55,5100,Haven (188),Fracture (165),Controller,71,62,61,60,59,58,57,56,55,54,53
-Ruxic,Natus Vincere,Ukraine,224.0,0.78,0.7,0.1,0.67,4468,Split (246),Haven (197),Duelist,90,81,80,78,76,75,74,73,72,71,70
-Shao,Natus Vincere,Ukraine,186.0,0.65,0.68,0.07,0.58,5000,Lotus (196),Sunset (172),Sentinel,74,65,64,63,62,61,60,59,58,57,56
-alexiiik,Natus Vincere,Ukraine,182.0,0.63,0.67,0.06,0.57,4950,Bind (192),Pearl (170),Controller,73,64,63,62,61,60,59,58,57,56,55
-hiro,Natus Vincere,Ukraine,188.0,0.64,0.68,0.08,0.59,4900,Ascent (198),Breeze (172),Initiator,75,66,65,64,63,62,61,60,59,58,57
-Joliinaa,SK Nebula,Germany,188.0,0.64,0.67,0.07,0.58,4950,Ascent (198),Pearl (170),Initiator,75,66,65,64,63,62,61,60,59,58,57
-Liza,SK Nebula,Germany,205.0,0.7,0.69,0.1,0.64,4800,Split (215),Icebox (180),Duelist,80,71,70,69,68,67,66,65,64,63,62
-PuriTy,SK Nebula,Germany,190.0,0.66,0.69,0.08,0.6,4900,Fracture (200),Breeze (175),Flex,77,68,67,66,65,64,63,62,61,60,59
-devilasxa,SK Nebula,Germany,176.0,0.61,0.67,0.06,0.55,5000,Bind (185),Haven (160),Controller,70,61,60,59,58,57,56,55,54,53,52
-jademwah,SK Nebula,Germany,183.0,0.63,0.68,0.06,0.56,4980,Lotus (193),Sunset (170),Sentinel,73,64,63,62,61,60,59,58,57,56,55
-Boo,Team Heretics,Lithuania,162.2,0.56,0.64,0.073,0.49,6225,Lotus (187.8),Pearl (147.6),Controller,54,50,50,58,60,55,56,53,62,49,63
-MiniBoo,Team Heretics,Lithuania,207.6,0.75,0.75,0.16,0.56,4950,Breeze (244.3),Bind (209.7),Duelist,69,78,75,72,81,75,78,77,70,73,77
-RieNs,Team Heretics,Turkey,220.9,0.76,0.68,0.075,0.64,4714,Breeze (245.0),Pearl (181.8),Initiator,74,75,63,67,82,68,67,80,64,61,68
-Wo0t,Team Heretics,Turkey,230.3,0.8,0.69,0.137,0.73,4512,Ascent (245.6),Lotus (196.2),Initiator,77,82,78,76,75,75,73,73,70,69,65
-benjyfishy,Team Heretics,United Kingdom,182.2,0.65,0.69,0.085,0.59,4995,Bind (234.0),Breeze (173.2),Sentinel,61,66,73,59,58,67,67,65,78,67,66
-Keiko,Team Liquid,UK,220.0,0.75,0.7,0.11,0.66,4780,Split (230),Pearl (190),Duelist,85,76,75,74,73,72,71,70,69,68,67
-kamo,Team Liquid,Poland,188.0,0.64,0.68,0.08,0.59,4900,Ascent (198),Lotus (170),Initiator,75,66,65,64,63,62,61,60,59,58,57
-nAts,Team Liquid,Russia,182.0,0.63,0.67,0.06,0.57,4950,Haven (192),Breeze (170),Sentinel,73,64,63,62,61,60,59,58,57,56,55
-paTiTek,Team Liquid,Poland,180.0,0.62,0.67,0.05,0.56,5000,Fracture (190),Sunset (165),Controller,72,63,62,61,60,59,58,57,56,55,54
-trexx,Team Liquid,Russia,195.0,0.67,0.68,0.09,0.6,4850,Bind (205),Icebox (175),Flex,78,69,68,67,66,65,64,63,62,61,60
-Favian,ULF Esports,Spain,188.0,0.64,0.67,0.07,0.58,4950,Ascent (198),Pearl (170),Initiator,75,66,65,64,63,62,61,60,59,58,57
-audaz,ULF Esports,Spain,183.0,0.63,0.68,0.06,0.56,4980,Lotus (193),Sunset (170),Sentinel,73,64,63,62,61,60,59,58,57,56,55
-echo,ULF Esports,Spain,176.0,0.61,0.67,0.06,0.55,5000,Bind (185),Haven (160),Controller,70,61,60,59,58,57,56,55,54,53,52
-nekky,ULF Esports,Spain,205.0,0.7,0.69,0.1,0.64,4800,Split (215),Icebox (180),Duelist,80,71,70,69,68,67,66,65,64,63,62
-s0pp,ULF Esports,Spain,190.0,0.66,0.69,0.08,0.6,4900,Fracture (200),Breeze (175),Flex,77,68,67,66,65,64,63,62,61,60,59
+Nombre,Equipo,Nacionalidad,ACS,Kills/Round,Deaths/Round,Open Kills/Round,Headshots/Round,Kill cost,Mejor mapa (ACS),Peor mapa (ACS),Rol recomendado
+Wo0t,Team Heretics,Turkey,230.3,0.8,0.69,0.137,0.73,4512,Ascent (245.6),Lotus (196.2),Initiator
+benjyfishy,Team Heretics,United Kingdom,182.2,0.65,0.69,0.085,0.59,4995,Bind (234.0),Breeze (173.2),Sentinel
+RieNs,Team Heretics,Turkey,220.9,0.76,0.68,0.075,0.64,4714,Breeze (245.0),Pearl (181.8),Initiator
+MiniBoo,Team Heretics,Lithuania,207.6,0.75,0.75,0.16,0.56,4950,Breeze (244.3),Bind (209.7),Duelist
+Boo,Team Heretics,Lithuania,162.2,0.56,0.64,0.073,0.49,6225,Lotus (187.8),Pearl (147.6),Controller
+Alfajer,Fnatic,Turkey,228.0,0.78,0.7,0.11,0.7,4700,Breeze (240),Icebox (205),Duelist
+Chronicle,Fnatic,Russia,216.0,0.72,0.69,0.08,0.62,4557,Ascent (230),Split (198),Initiator
+Boaster,Fnatic,United Kingdom,174.0,0.6,0.65,0.04,0.5,5000,Lotus (185),Haven (160),Controller
+crashies,Fnatic,USA,185.0,0.65,0.67,0.07,0.58,4800,Split (195),Bind (170),Sentinel
+kaajak,Fnatic,Finland,195.0,0.68,0.68,0.09,0.6,4850,Pearl (205),Fracture (180),Initiator
+jawgemo,G2 Esports,USA,232.0,0.8,0.71,0.12,0.72,4650,Fracture (245),Pearl (200),Duelist
+valyn,G2 Esports,USA,180.0,0.62,0.66,0.05,0.55,5100,Bind (190),Breeze (160),Controller
+JonahP,G2 Esports,USA,188.0,0.64,0.67,0.08,0.58,4900,Ascent (198),Lotus (170),Initiator
+leaf,G2 Esports,USA,225.0,0.78,0.7,0.11,0.68,4700,Split (235),Icebox (200),Duelist
+trent,G2 Esports,USA,182.0,0.63,0.67,0.06,0.57,4950,Haven (192),Fracture (170),Sentinel
+PROFEK,BBL Esports,Turkey,190.0,0.66,0.69,0.07,0.58,4900,Bind (200),Breeze (170),Controller
+LewN,BBL Esports,Turkey,210.0,0.74,0.7,0.11,0.65,4700,Split (220),Icebox (185),Duelist
+MAGNUM,BBL Esports,Czechia,178.0,0.62,0.68,0.05,0.55,5050,Ascent (188),Pearl (160),Sentinel
+sociablee,BBL Esports,Turkey,196.0,0.68,0.69,0.09,0.6,4850,Haven (205),Lotus (180),Initiator
+Jamppi,BBL Esports,Finland,215.0,0.76,0.71,0.1,0.67,4750,Fracture (225),Sunset (190),Flex
+Flickless,GIANTX,Spain,205.0,0.7,0.69,0.1,0.64,4800,Split (215),Icebox (180),Duelist
+ara,GIANTX,Spain,188.0,0.64,0.67,0.07,0.58,4950,Ascent (198),Pearl (170),Initiator
+GRUBINHO,GIANTX,Spain,176.0,0.61,0.67,0.06,0.55,5000,Bind (185),Haven (160),Controller
+Cloud,GIANTX,UK,202.0,0.69,0.69,0.08,0.61,4900,Lotus (212),Fracture (180),Initiator
+westside,GIANTX,Spain,183.0,0.63,0.68,0.06,0.56,4980,Haven (193),Sunset (170),Sentinel
+pyrolll,Karmine Corp,France,212.0,0.73,0.7,0.11,0.66,4780,Fracture (222),Breeze (185),Duelist
+marteen,Karmine Corp,France,190.0,0.66,0.69,0.08,0.6,4900,Ascent (200),Lotus (175),Initiator
+Avez,Karmine Corp,France,185.0,0.64,0.68,0.06,0.58,5000,Haven (195),Split (170),Controller
+SUYGETSU,Karmine Corp,Russia,180.0,0.62,0.67,0.05,0.56,5100,Pearl (190),Icebox (165),Sentinel
+Saadhak,Karmine Corp,Brazil,200.0,0.68,0.69,0.09,0.61,4850,Bind (210),Sunset (180),Flex
+Ruxic,Natus Vincere,Ukraine,224.0,0.78,0.7,0.1,0.67,4468,Split (246),Haven (197),Duelist
+hiro,Natus Vincere,Ukraine,188.0,0.64,0.68,0.08,0.59,4900,Ascent (198),Breeze (172),Initiator
+alexiiik,Natus Vincere,Ukraine,182.0,0.63,0.67,0.06,0.57,4950,Bind (192),Pearl (170),Controller
+ANGE1,Natus Vincere,Ukraine,178.0,0.61,0.66,0.05,0.55,5100,Haven (188),Fracture (165),Controller
+Shao,Natus Vincere,Ukraine,186.0,0.65,0.68,0.07,0.58,5000,Lotus (196),Sunset (172),Sentinel
+Jiex,Karmine Corp GC,France,210.0,0.72,0.7,0.11,0.66,4800,Split (220),Pearl (185),Duelist
+alkyia,Karmine Corp GC,France,192.0,0.66,0.69,0.08,0.6,4900,Ascent (202),Breeze (178),Initiator
+Glance,Karmine Corp GC,France,184.0,0.63,0.68,0.06,0.57,4950,Bind (194),Lotus (170),Controller
+safiaa,Karmine Corp GC,France,180.0,0.62,0.67,0.05,0.56,5000,Haven (190),Icebox (165),Sentinel
+anesilia,Karmine Corp GC,France,188.0,0.64,0.68,0.07,0.58,4900,Fracture (198),Sunset (172),Flex
+Veqaj,Gentle Mates,France,208.0,0.71,0.7,0.1,0.65,4820,Breeze (218),Pearl (190),Duelist
+Minny,Gentle Mates,France,186.0,0.65,0.68,0.07,0.58,4950,Ascent (196),Lotus (170),Controller
+kamyk,Gentle Mates,France,192.0,0.66,0.69,0.08,0.6,4900,Split (202),Haven (176),Initiator
+ComeBack,Gentle Mates,France,180.0,0.62,0.67,0.05,0.56,5000,Bind (190),Icebox (165),Sentinel
+Proxh,Gentle Mates,France,188.0,0.64,0.68,0.07,0.58,4900,Fracture (198),Sunset (172),Flex
+starki,Enterprise Esports,Czechia,190.0,0.66,0.69,0.08,0.6,4900,Split (200),Lotus (175),Initiator
+jas,Enterprise Esports,Czechia,182.0,0.63,0.68,0.06,0.57,4950,Bind (192),Pearl (170),Controller
+zeek,Enterprise Esports,Poland,210.0,0.72,0.7,0.11,0.66,4800,Fracture (220),Breeze (185),Duelist
+Doma,Enterprise Esports,UK,200.0,0.68,0.69,0.09,0.61,4850,Ascent (210),Icebox (180),Flex
+Kiles,Enterprise Esports,Spain,185.0,0.64,0.68,0.07,0.58,4950,Haven (195),Sunset (170),Sentinel
+Nami,GIANTX GC,Spain,208.0,0.71,0.7,0.1,0.65,4820,Breeze (218),Pearl (190),Duelist
+sarah,GIANTX GC,Spain,192.0,0.66,0.69,0.08,0.6,4900,Ascent (202),Lotus (176),Initiator
+eva,GIANTX GC,Spain,180.0,0.62,0.67,0.05,0.56,5000,Bind (190),Icebox (165),Controller
+ness,GIANTX GC,Spain,184.0,0.63,0.68,0.06,0.57,4950,Split (194),Sunset (170),Sentinel
+Smurfette,GIANTX GC,Turkey,212.0,0.72,0.7,0.11,0.66,4800,Fracture (222),Haven (185),Duelist
+Liza,SK Nebula,Germany,205.0,0.7,0.69,0.1,0.64,4800,Split (215),Icebox (180),Duelist
+Joliinaa,SK Nebula,Germany,188.0,0.64,0.67,0.07,0.58,4950,Ascent (198),Pearl (170),Initiator
+devilasxa,SK Nebula,Germany,176.0,0.61,0.67,0.06,0.55,5000,Bind (185),Haven (160),Controller
+jademwah,SK Nebula,Germany,183.0,0.63,0.68,0.06,0.56,4980,Lotus (193),Sunset (170),Sentinel
+PuriTy,SK Nebula,Germany,190.0,0.66,0.69,0.08,0.6,4900,Fracture (200),Breeze (175),Flex
+Loita,BBL PCIFIC,Turkey,198.0,0.67,0.69,0.09,0.61,4880,Split (208),Pearl (180),Duelist
+Crewen,BBL PCIFIC,Turkey,185.0,0.64,0.68,0.07,0.58,4950,Ascent (195),Lotus (170),Initiator
+Rose,BBL PCIFIC,Turkey,176.0,0.61,0.67,0.06,0.55,5000,Bind (186),Haven (160),Controller
+Lar0k,BBL PCIFIC,Turkey,182.0,0.63,0.68,0.06,0.56,4980,Lotus (192),Sunset (170),Sentinel
+lovers_rock,BBL PCIFIC,Turkey,190.0,0.66,0.69,0.08,0.6,4900,Fracture (200),Breeze (175),Flex
+nekky,ULF Esports,Spain,205.0,0.7,0.69,0.1,0.64,4800,Split (215),Icebox (180),Duelist
+Favian,ULF Esports,Spain,188.0,0.64,0.67,0.07,0.58,4950,Ascent (198),Pearl (170),Initiator
+echo,ULF Esports,Spain,176.0,0.61,0.67,0.06,0.55,5000,Bind (185),Haven (160),Controller
+audaz,ULF Esports,Spain,183.0,0.63,0.68,0.06,0.56,4980,Lotus (193),Sunset (170),Sentinel
+s0pp,ULF Esports,Spain,190.0,0.66,0.69,0.08,0.6,4900,Fracture (200),Breeze (175),Flex
+Keiko,Team Liquid,UK,220.0,0.75,0.7,0.11,0.66,4780,Split (230),Pearl (190),Duelist
+kamo,Team Liquid,Poland,188.0,0.64,0.68,0.08,0.59,4900,Ascent (198),Lotus (170),Initiator
+nAts,Team Liquid,Russia,182.0,0.63,0.67,0.06,0.57,4950,Haven (192),Breeze (170),Sentinel
+paTiTek,Team Liquid,Poland,180.0,0.62,0.67,0.05,0.56,5000,Fracture (190),Sunset (165),Controller
+trexx,Team Liquid,Russia,195.0,0.67,0.68,0.09,0.6,4850,Bind (205),Icebox (175),Flex
