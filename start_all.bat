@@ -38,6 +38,7 @@ cd frontend
 if exist package.json (
     echo Instalando dependencias de Node...
     call npm install
+    call npm install react-slick slick-carousel
     echo Levantando frontend...
     start cmd /k "npm start"
 ) else (

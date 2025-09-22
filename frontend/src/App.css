@@ -1,3 +1,19 @@
+.app-container {
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; 
+  padding: 10px;
+  background-color: #1e1e1e;
+   height: 100vh;
+}
+.team-zone {
+  margin-top: 10px;
+}
+.zones-container {
+  width: 80%;
+  
+}
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -23,7 +39,7 @@
 .team-grid {
   display: flex; 
   flex-wrap: wrap; 
-  gap: 20px; 
+  gap: 15px; 
   justify-content: center; 
   align-items: center;
 }
@@ -31,7 +47,7 @@
 .team-card {
   width: 150px; 
   height: 200px; 
-  background-color: #073248; 
+  background-color: #1e4e66; 
   border-radius: 8px; 
   text-align: center; 
   transition: transform 0.2s ease; 
@@ -51,19 +67,91 @@
 .team-card:hover {
   transform: scale(1.05); 
 }
-
-.open-modal-button,
-.close-modal-button {
-  margin-top: 10px;
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+.modal-overlay-agent {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(99, 99, 99, 0.5); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; 
 }
 
-.open-modal-button:hover,
-.close-modal-button:hover {
-  background-color: #0056b3;
+.modal-agent {
+  background: rgba(60, 60, 63, 0.819);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  width: 90%;
+}
+
+.agent-grid {
+  display: flex; 
+  flex-wrap: wrap; 
+  gap: 15px; 
+  justify-content: center; 
+  align-items: center;
+}
+
+.agent-card {
+  width: 150px; 
+  height: 200px; 
+  background-color: #454647; 
+  border-radius: 8px; 
+  text-align: center; 
+  transition: transform 0.2s ease; 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: center; 
+  align-items: center; 
+}
+
+.agent-card img {
+  width: 90%; 
+  height: auto; 
+  object-fit: cover; 
+  border-radius: 8px; 
+}
+
+.agent-card:hover {
+  transform: scale(1.05); 
+}
+
+
+
+.map-container {
+  width: 100%;
+  max-width: 600px;
+  margin-top: 30px ;
+  margin-bottom: 30px ;
+  align-items: center;
+  justify-content: center;
+  margin-left:25%;
+}
+
+.map-slide {
+  text-align: center;
+}
+
+.map-img {
+  width: 100%;
+  border-radius: 30px;
+    object-fit: cover;   
+}
+
+.dataContainer {
+  height: 80%;
+  width: 30%;
+  align-items: center;
+  margin-right: 30px;
+  justify-content: center;
+  color: rgb(0, 0, 0);
+  font-family: Verdana, sans-serif;
+  font-size: 20px;
+  background-color: #98999a;
+  border-radius: 20px;
 }

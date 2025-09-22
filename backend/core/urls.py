@@ -16,13 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from tfg.views import JugadorTeam, EquipoViewSet
+from tfg.views import JugadorTeam, EquipoViewSet, PersonajeViewSet,MapaViewSet
 from rest_framework.routers import DefaultRouter
 from django.conf import settings
 from django.conf.urls.static import static
 equipo_list = EquipoViewSet.as_view({'get': 'list'})
 equipo_detail = EquipoViewSet.as_view({'get': 'retrieve'})
-
+agente_list = PersonajeViewSet.as_view({'get': 'list'})
+map_list = MapaViewSet.as_view({'get': 'list'})
 
 router = DefaultRouter()
 
@@ -31,6 +32,8 @@ urlpatterns = [
     path("api/teams/", equipo_list, name="team-list"),
     path("api/teams/<int:pk>/", equipo_detail, name="team-detail"),
     path("api/teams/<int:team_id>/jugadores/", JugadorTeam.as_view(), name="jugadores-por-team"),
+    path('api/agentes/', agente_list, name='agente-list'),
+    path('api/maps/', map_list, name='map-list'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

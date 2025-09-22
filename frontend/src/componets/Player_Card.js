@@ -1,12 +1,26 @@
 import React from "react";
-
-
-function PlayerCard({ selectedTeam, player,selectedAgent}) {
+import "./Player_Card.css";
+function PlayerCard({ selectedAgent, jugador, onClick }) {
   return (
     <div className="player-card">
-      <img src={player.imagen_jugador} alt={player.nombre_jugador} className="player-image" />
-      <h4 className="player-name">{player.nombre_jugador}</h4>
-      <p className="player-role">{player.rol}</p>
+    <button
+      className="agent-select-button"
+      onClick={onClick}
+      title={selectedAgent ? selectedAgent.name : "Seleccionar agente"}
+    >
+      {selectedAgent ? (
+        <img
+          src={selectedAgent.imagen_personaje}
+          alt={selectedAgent.nombre}
+          className="agent-select-img"
+        />
+      ) : (
+        <span className="agent-select-placeholder">+</span>
+      )}
+    </button>
+    <span className="player-name">{jugador.nombre_jugador}</span>
     </div>
   );
 }
+
+export default PlayerCard;
