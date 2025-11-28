@@ -1,8 +1,14 @@
 import React from "react";
 import "./Player_Card.css";
-function PlayerCard({ selectedAgent, jugador, onClick }) {
+function PlayerCard({ selectedAgent, jugador, onClick, highlight }) {
+  const getBackgroundColor = () => {
+    if (highlight === "high") return "#28a745";
+    if (highlight === "low") return "#d9534f";
+    return "#a2a2a2"; 
+  };
+
   return (
-    <div className="player-card">
+    <div className="player-card" style={{ backgroundColor: getBackgroundColor() }}>
     <button
       className="agent-select-button"
       onClick={onClick}

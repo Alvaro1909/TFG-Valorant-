@@ -17,7 +17,7 @@ def run():
     Mapa.objects.update_or_create(nombre="Pearl", defaults={"numero_Iniciadores":1, "numero_Controlador":1, "numero_Centinela":2, "numero_Duelista":1, "imagen_mapa":"imagenes/mapas/Pearl.png"})
     Mapa.objects.update_or_create(nombre="Lotus", defaults={"numero_Iniciadores":2, "numero_Controlador":2, "numero_Centinela":0, "numero_Duelista":1, "imagen_mapa":"imagenes/mapas/Lotus.png"})
     Mapa.objects.update_or_create(nombre="Sunset", defaults={"numero_Iniciadores":1, "numero_Controlador":1, "numero_Centinela":1, "numero_Duelista":2, "imagen_mapa":"imagenes/mapas/Sunset.png"})
-    
+    Mapa.objects.update_or_create(nombre="Aleatorio", defaults={"numero_Iniciadores":1, "numero_Controlador":2, "numero_Centinela":1, "numero_Duelista":1, "imagen_mapa":"imagenes/mapas/aleatorio.png"})
    
     Personaje.objects.update_or_create(nombre="Brimstone", defaults={"rol":"Controller", "counter1":"Phoenix", "counter2":"Gekko", "imagen_personaje":"imagenes/agentes/Brimstone.avif"})
     Personaje.objects.update_or_create(nombre="Omen", defaults={"rol":"Controller", "counter1":"Reyna", "counter2":"Raze", "imagen_personaje":"imagenes/agentes/Omen.avif"})

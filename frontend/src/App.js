@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import "./App.css";
 import TeamSelect from "./componets/Team_Select.js";
 import PlayerCard from "./componets/Player_Card.js";
@@ -6,104 +6,127 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
+const API_BASE_URL = "/api";
 
-export default function App() {
+function App() {
   const [teams, setTeams] = useState([]);
+  const [predicciones, setPredicciones] = useState(null);
   const [selected1, setSelected1] = useState(null);
   const [selected2, setSelected2] = useState(null);
-  const [targetTeam, setTargetTeam] = useState(null);
   const [jugadores1, setJugadores1] = useState([]);
   const [jugadores2, setJugadores2] = useState([]);
   const [isModalTeam, setIsModalTeam] = useState(false);
+  const [targetTeam, setTargetTeam] = useState(null);
   const [agentes, setAgentes] = useState([]);
+  const [targetPlayer, setTargetPlayer] = useState(null);
   const [selectedAgents, setSelectedAgents] = useState({});
   const [isModalAgent, setIsModalAgent] = useState(false);
   const [maps, setMaps] = useState([]);
-  const [currentMap, setCurrentMap] = useState(maps[0] || null);
+  const [currentMap, setCurrentMap] = useState(null);
 
-
-  useEffect(() => {
-    fetch("/api/teams/")
-      .then((res) => res.json())
-      .then((data) => setTeams(data))
-      .catch((err) => console.error("Error cargando equipos:", err));
+  const fetchData = useCallback(async (url, setter) => {
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+      setter(data);
+    } catch (err) {
+      console.error(`Error cargando datos de ${url}:`, err);
+    }
   }, []);
 
   useEffect(() => {
-    fetch("/api/agentes/")
-      .then((res) => res.json())
-      .then((data) => setAgentes(data))
-      .catch((err) => console.error("Error cargando agentes:", err));
+    fetchData(`${API_BASE_URL}/teams/`, setTeams);
+    fetchData(`${API_BASE_URL}/agentes/`, setAgentes);
+    fetchData(`${API_BASE_URL}/maps/`, setMaps);
+  }, [fetchData]);
+
+  useEffect(() => {
+    if (maps.length > 0) {
+      setCurrentMap(maps[0]);
+    }
+  }, [maps]);
+
+  const fetchJugadores = useCallback(async (teamId, setJugadores) => {
+    if (!teamId) return;
+    try {
+      const res = await fetch(`${API_BASE_URL}/teams/${teamId}/jugadores/`);
+      const data = await res.json();
+      setJugadores(data);
+      setSelectedAgents({});
+    } catch (err) {
+      console.error("Error cargando jugadores:", err);
+    }
   }, []);
-  useEffect(() => {
-    fetch("/api/maps/")
-      .then((res) => res.json())
-      .then((data) => setMaps(data))
-      .catch((err) => console.error("Error cargando mapas:", err));
-  }, []);
 
   useEffect(() => {
-    if (!selected1) return;
-    fetch(`/api/teams/${selected1}/jugadores/`)
-      .then((res) => res.json())
-      .then((data) => {
-        setJugadores1(data);
-        console.log("Jugadores cargados1:", data);
-        resetAgents("equipo1");
-      })
-      .catch((err) => console.error("Error cargando jugadores:", err));
-  }, [selected1]);
+    fetchJugadores(selected1, setJugadores1);
+  }, [selected1, fetchJugadores]);
 
   useEffect(() => {
-    if (!selected2) return;
-    fetch(`/api/teams/${selected2}/jugadores/`)
-      .then((res) => res.json())
-      .then((data) => {
-        setJugadores2(data);
-        console.log("Jugadores cargados2:", data);
-        resetAgents("equipo2");
-      })
-      .catch((err) => console.error("Error cargando jugadores:", err));
-  }, [selected2]);
+    fetchJugadores(selected2, setJugadores2);
+  }, [selected2, fetchJugadores]);
 
-  const handleSelect = (team, target) => {
+  const handleSelect = (team) => {
     if (targetTeam === "equipo1") {
       setSelected1(team.id);
-      setIsModalTeam(false);
-      console.log("Equipo seleccionado:", team);
-      console.log(jugadores1);
+      setPredicciones(null);
     } else if (targetTeam === "equipo2") {
       setSelected2(team.id);
-      setIsModalTeam(false);
-      console.log("Equipo seleccionado:", team);
+      setPredicciones(null);
     }
-    console.log(jugadores2);
+    setIsModalTeam(false);
   };
 
- const handleAgentSelect = (agent) => {
-  setSelectedAgents((prev) => ({
-    ...prev,
-    [targetTeam]: agent, 
-  }));
-  setIsModalAgent(false);
-  console.log(`Agente ${agent.nombre} asignado a ${targetTeam}`, agent);
-};
+  const handleAgentSelect = (agent) => {
+    setSelectedAgents((prev) => ({
+      ...prev,
+      [targetPlayer]: agent,
+    }));
+    setIsModalAgent(false);
+    setPredicciones(null);
+  };
 
   const selectedTeam1 = teams.find((t) => t.id === selected1);
   const selectedTeam2 = teams.find((t) => t.id === selected2);
-  const resetAgents = (teamKey) => {
-    setSelectedAgents((prev) => {
-    const updated = { ...prev };
-    Object.keys(updated).forEach((key) => {
-      if (key.startsWith(teamKey)) {
-        delete updated[key];
-      }
-    });
-    return updated;
-  });
 
-};
-const mapSettings = {
+  const handlePredicciones = async () => {
+    const payload = {
+      jugadores1: jugadores1.map((j) => j.id),
+      jugadores2: jugadores2.map((j) => j.id),
+      equipo1: selected1,
+      equipo2: selected2,
+      mapa: currentMap ? currentMap.nombre : null,
+      agentes: Object.entries(selectedAgents).map(([nombre_jugador, agent]) => ({
+        nombre_jugador,
+        nombre_agente: agent.nombre,
+      })),
+    };
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/predicciones/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      setPredicciones(data);
+    } catch (err) {
+      console.error("Error al obtener predicciones:", err);
+    }
+  };
+
+  const isPredictionReady =
+    selected1 &&
+    selected2 &&
+    currentMap &&
+    jugadores1.length > 0 &&
+    jugadores2.length > 0 &&
+    jugadores1.every((j) => selectedAgents[j.nombre_jugador]) &&
+    jugadores2.every((j) => selectedAgents[j.nombre_jugador]);
+
+  const mapSettings = {
     dots: true,
     infinite: true,
     speed: 500,
@@ -111,150 +134,197 @@ const mapSettings = {
     slidesToScroll: 1,
     arrows: true,
     afterChange: (index) => {
-      setCurrentMap(maps[index]); // guardamos el mapa actual
-      console.log("Mapa actual:", maps[index]);
+      setCurrentMap(maps[index]);
     },
   };
+
+  const getHighlight = (player, teamPredictions) => {
+    if (!teamPredictions || teamPredictions.length === 0) return null;
+
+    const scores = teamPredictions.map((p) => p.score);
+    const maxScore = Math.max(...scores);
+    const minScore = Math.min(...scores);
+
+    const playerScore = teamPredictions.find(
+      (p) => p.nombre === player.nombre_jugador
+    )?.score;
+
+    if (playerScore === maxScore) return "high";
+    if (playerScore === minScore) return "low";
+    return null;
+  };
+
   return (
     <div className="app-container">
+      <style>
+        {`
+          .slick-dots li button:before {
+            color: white;
+          }
+
+          .slick-dots li.slick-active button:before {
+            color: white;
+          }
+        `}
+      </style>
       <div className="zones-container">
-          <div className="team-zone">
-            <div className="agent-grid">
-              <TeamSelect
-                selectedTeam={selectedTeam1}
-                onClick={() => {
-                  setTargetTeam("equipo1");
-                  setIsModalTeam(true);
-                }}
-              />
-              {jugadores1.map((jugador, index) => (
-                <PlayerCard
-                  key={`e1-${index}`}
-                  jugador={jugador}
-                  selectedAgent={selectedAgents[`equipo1-${index}`] || null}
-                  onClick={() => {
-                    setTargetTeam(`equipo1-${index}`);
-                    setIsModalAgent(true);
-                  }}
-                />
-              ))}
-            </div>
-            </div>
-            <div className="map-container">
-                <Slider {...mapSettings}>
-                    {maps.map((mapa) => (
-                        <img
-                          src={mapa.imagen_mapa}
-                          alt={mapa.nombre}
-                          className="map-img"
-                        />
-                    ))}
-                  </Slider>
-            </div>
-          <div className="team-zone">
+        <div className="team-zone">
           <div className="agent-grid">
-          <TeamSelect
-            selectedTeam={selectedTeam2}
-            onClick={() => {
-              setTargetTeam("equipo2");
-              setIsModalTeam(true);
-            }}
-          />
-          {jugadores2.map((jugador, index) => (
-            <PlayerCard
-              key={`e2-${index}`}
-              jugador={jugador}
-              selectedAgent={selectedAgents[`equipo2-${index}`] || null}
+            <TeamSelect
+              selectedTeam={selectedTeam1}
               onClick={() => {
-                setTargetTeam(`equipo2-${index}`);
-                setIsModalAgent(true);
+                setTargetTeam("equipo1");
+                setIsModalTeam(true);
               }}
             />
-          ))}
+            {jugadores1.map((jugador) => (
+              <PlayerCard
+                key={`e1-${jugador.nombre_jugador}`}
+                jugador={jugador}
+                selectedAgent={selectedAgents[jugador.nombre_jugador] || null}
+                onClick={() => {
+                  setTargetPlayer(jugador.nombre_jugador);
+                  setIsModalAgent(true);
+                }}
+                highlight={getHighlight(jugador, predicciones?.equipo1)}
+              />
+            ))}
           </div>
-        
+        </div>
+        <div className="map-container">
+          {maps.length > 0 && (
+            <Slider {...mapSettings}>
+              {maps.map((mapa) => (
+                <img
+                  key={mapa.id}
+                  src={mapa.imagen_mapa}
+                  alt={mapa.nombre}
+                  className="map-img"
+                />
+              ))}
+            </Slider>
+          )}
+        </div>
+        <div className="team-zone">
+          <div className="agent-grid">
+            <TeamSelect
+              selectedTeam={selectedTeam2}
+              onClick={() => {
+                setTargetTeam("equipo2");
+                setIsModalTeam(true);
+              }}
+            />
+            {jugadores2.map((jugador) => (
+              <PlayerCard
+                key={jugador.nombre_jugador}
+                jugador={jugador}
+                selectedAgent={selectedAgents[jugador.nombre_jugador] || null}
+                onClick={() => {
+                  setTargetPlayer(jugador.nombre_jugador);
+                  setIsModalAgent(true);
+                }}
+                highlight={getHighlight(jugador, predicciones?.equipo2)}
+              />
+            ))}
           </div>
+        </div>
 
-          {isModalTeam && (
-            <div className="modal-overlay">
-              <div className="modal">
+        {isModalTeam && (
+          <div className="modal-overlay">
+            <div className="modal">
               <h3 style={{ color: "white", fontFamily: "Verdana, sans-serif" }}>
                 Selecciona tu equipo
-              </h3>                <div className="team-grid">
-                  {teams.map((team) => (
-                    <div
-                      key={team.id}
-                      className="team-card"
-                      onClick={() => handleSelect(team)}
-                    >
-                      <img
-                        src={team.imagen_equipo}
-                        alt={team.nombre}
-                        className="team-card-img"
-                      />
-                      <span className="team-name">{team.name}</span>
-                    </div>
-                  ))}
-                </div>
+              </h3>
+              <div className="team-grid">
+                {teams.map((team) => (
+                  <div
+                    key={team.id}
+                    className="team-card"
+                    onClick={() => handleSelect(team)}
+                  >
+                    <img
+                      src={team.imagen_equipo}
+                      alt={team.nombre}
+                      className="team-card-img"
+                    />
+                    <span className="team-name">{team.name}</span>
+                  </div>
+                ))}
               </div>
             </div>
-          )}
-
-          {isModalAgent && (
-            <div className="modal-overlay-agent">
-              <div className="modal-agent">
-                <div className="agent-grid">
-                  {agentes.map((agente) => (
-                    <div
-                      key={agente.id}
-                      className="agent-card"
-                      onClick={() => handleAgentSelect(agente)}
-                    >
-                      <img
-                        src={agente.imagen_personaje}
-                        alt={agente.nombre}
-                        className="agent-card-img"
-                      />
-                      <span className="agent-name">{agente.name}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-
-        </div>
-          <div className="dataContainer"> 
-             {currentMap ? currentMap.nombre : "Cargando..."}
-
-            Composición Equipo :
-            {jugadores1.map((jugador, index) => {
-              const agent = selectedAgents[`equipo1-${index}`];
-              return (
-                <div key={`comp-e1-${index}`}>
-                  {jugador.nombre_jugador}: {agent ? agent.nombre +"  " +agent.rol : "No asignado"}
-                </div>
-              );
-            })}
-            Composición Equipo Rival:
-            {jugadores2.map((jugador, index) => {
-              const agent = selectedAgents[`equipo2-${index}`];
-              return (
-                <div key={`comp-e2-${index}`}>
-                  {jugador.nombre_jugador}: {agent ? agent.nombre +"  " +agent.rol : "No asignado"}
-                </div>
-              );
-            })}
-            Probabilidad de victoria Equipo
-            Resultado
-            Equipo 1 = ataque
-            Equipo 2 = defensa
           </div>
+        )}
 
+        {isModalAgent && (
+          <div className="modal-overlay-agent">
+            <div className="modal-agent">
+              <div className="agent-grid">
+                {agentes.map((agente) => (
+                  <div
+                    key={agente.id}
+                    className="agent-card"
+                    onClick={() => handleAgentSelect(agente)}
+                  >
+                    <img
+                      src={agente.imagen_personaje}
+                      alt={agente.nombre}
+                      className="agent-card-img"
+                    />
+                    <span className="agent-name">{agente.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+      <div className="dataContainer">
+        {currentMap && (
+          <h2 aria-label={`Selected map: ${currentMap.nombre}`}>
+            {currentMap.nombre}
+          </h2>
+        )}
 
+        {isPredictionReady && (
+          <button onClick={handlePredicciones}>Calcular Predicciones</button>
+        )}
 
-
-          
-  </div>
+        {predicciones && (
+          <div className="predicciones-resultado">
+            {predicciones.error ? (
+              <p>Error: {predicciones.error}</p>
+            ) : (
+              <div>
+                <h3>Resultados de la Predicción</h3>
+                <div>
+                  <h4>Puntuación Equipo 1: {predicciones.puntuacion_equipo1}</h4>
+                  <ul>
+                    {predicciones.equipo1 &&
+                      predicciones.equipo1.map((p) => (
+                        <li key={p.nombre}>
+                          {p.nombre}: {p.score}
+                        </li>
+                      ))}
+                  </ul>
+                </div>
+                <div>
+                  <h4>Puntuación Equipo 2: {predicciones.puntuacion_equipo2}</h4>
+                  <ul>
+                    {predicciones.equipo2 &&
+                      predicciones.equipo2.map((p) => (
+                        <li key={p.nombre}>
+                          {p.nombre}: {p.score}
+                        </li>
+                      ))}
+                  </ul>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
+
+export default App;

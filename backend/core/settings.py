@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-m^ajuz+o50t5wz6ditjelu-@806i^1@_dh7k*!r_#3+hh+6qdu
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 MEDIA_URL= '/Database data/'  
 MEDIA_ROOT = os.path.join(BASE_DIR, 'Database data') 
 INSTALLED_APPS = [
@@ -51,6 +51,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -129,3 +134,5 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+
