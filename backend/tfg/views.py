@@ -33,6 +33,13 @@ class JugadorTeam(APIView):
 
 
 class PrediccionesView(APIView):
+    def tipo_composicion(self, ataque, defensa):
+        if ataque > defensa:
+            return 'Agresiva'
+        elif ataque < defensa:
+            return 'Defensiva'
+        else:
+            return 'Equilibrada'
 
     def post(self, request, *args, **kwargs):
         try:
@@ -42,6 +49,10 @@ class PrediccionesView(APIView):
             puntuacion_defensa_2 =0
             puntuacion_equipo1 =0
             puntuacion_equipo2 =0
+            porcentaje_victoria_equipo1 =0
+            porcentaje_victoria_equipo2 =0
+            listajugadores1 = []
+            listajugadores2 = []
             data = request.data
             jugadores1 = data.get("jugadores1")
             jugadores2 = data.get("jugadores2")
@@ -61,8 +72,6 @@ class PrediccionesView(APIView):
             equipo2_obj = equipo.objects.get(id=equipo2_id)
 
             agentes_dict = {agente['nombre_jugador']: agente['nombre_agente'] for agente in agentes}
-            listajugadores1 = []
-            listajugadores2 = []
             Diccomposicion1 = {"Centinela":mapa_actual.numero_Centinela,
                                  "Duelista": mapa_actual.numero_Duelista,
                                  "Iniciadores":mapa_actual.numero_Iniciadores,
@@ -73,93 +82,24 @@ class PrediccionesView(APIView):
                                "Iniciadores":mapa_actual.numero_Iniciadores,
                                    "Controlador":mapa_actual.numero_Controlador}
 
-            for jugador_id in jugadores1:
-                score = 0
-                jugador_obj = jugador.objects.get(id=jugador_id)
-                nombre_jugador = jugador_obj.nombre_jugador
-                agente_seleccionado = agentes_dict.get(nombre_jugador)
-
-                if not nombre_jugador or not agente_seleccionado:
-                    continue
-
-                agente_obj = Personaje.objects.get(nombre=agente_seleccionado)
-
-                score += (jugador_obj.puntuacion / 2.5) * 0.7
-                score += jugador_obj.Kills_per_Round * 10
-                score -= jugador_obj.Deaths_per_Round * 10
-
-                best_map = Mapa.objects.get(nombre=jugador_obj.Mejor_Mapa)
-                worst_map = Mapa.objects.get(nombre=jugador_obj.Peor_Mapa)
-                rol_recomendado = jugador_obj.Rol_Recomendado
-
-                if agente_obj.rol.strip() == rol_recomendado.strip():
-                    score += 10
-                
-                if best_map.nombre == mapa:
-                    score += 10
-                elif worst_map.nombre == mapa:
-                    score -= 10
-                
-                score += jugador_obj.Opening_Kills_per_Round * 10
-                score += (jugador_obj.Kill_Cost - 4000) / 100
-
-                for r in Diccomposicion1:
-                    if agente_obj.rol == r:
-                        Diccomposicion1[r]-=1
-                listajugadores1.append({"nombre": nombre_jugador, "score": round(score, 2)})
             
+            listajugadores1,puntuacion_ataque_1,puntuacion_defensa_1, puntuacion_equipo1= calcular_lista_jugadores(jugadores1, mapa, agentes_dict,Diccomposicion1, puntuacion_ataque_1, puntuacion_defensa_1, listajugadores1,equipo1_obj)
+            listajugadores2,puntuacion_ataque_2,puntuacion_defensa_2, puntuacion_equipo2= calcular_lista_jugadores(jugadores2, mapa, agentes_dict,Diccomposicion2, puntuacion_ataque_2, puntuacion_defensa_2, listajugadores2,equipo2_obj)
 
-            for jugador_id in jugadores2:
-                score = 0
-                jugador_obj = jugador.objects.get(id=jugador_id)
-                nombre_jugador = jugador_obj.nombre_jugador
-                agente_seleccionado = agentes_dict.get(nombre_jugador)
-
-                if not nombre_jugador or not agente_seleccionado:
-                    continue
-
-                agente_obj = Personaje.objects.get(nombre=agente_seleccionado)
-
-                score += (jugador_obj.puntuacion / 2.5) * 0.7
-                score += jugador_obj.Kills_per_Round * 10
-                score -= jugador_obj.Deaths_per_Round * 10
-
-                best_map = Mapa.objects.get(nombre=jugador_obj.Mejor_Mapa)
-                worst_map = Mapa.objects.get(nombre=jugador_obj.Peor_Mapa)
-                rol_recomendado = jugador_obj.Rol_Recomendado
-
-                if agente_obj.rol.strip() == rol_recomendado.strip():
-                    score += 10
-
-                if best_map.nombre == mapa:
-                    score += 10
-                elif worst_map.nombre == mapa:
-                    score -= 10
+            equipo_que_empieza = request.data.get('equipoQueEmpieza')           
+            tipo1 = self.tipo_composicion(puntuacion_ataque_1, puntuacion_defensa_1)
+            tipo2 = self.tipo_composicion(puntuacion_ataque_2, puntuacion_defensa_2)
+            porcentaje_victoria_equipo1, porcentaje_victoria_equipo2 = clacular_porcentaje_victoria(puntuacion_equipo1, puntuacion_equipo2,equipo_que_empieza,tipo1,tipo2)
                 
-                score += jugador_obj.Opening_Kills_per_Round * 10
-                score += (jugador_obj.Kill_Cost - 4000) / 100
-                for r in Diccomposicion2:
-                    if agente_obj.rol == r:
-                        Diccomposicion2[r]-=1
-                listajugadores2.append({"nombre": nombre_jugador, "score": round(score, 2)})
-
-            puntuacion_equipo1 = sum(jugador['score'] for jugador in listajugadores1)/5
-            puntuacion_equipo2 = sum(jugador['score'] for jugador in listajugadores2)/5
-            
-            if all(value == 0 for value in Diccomposicion1.values()):
-                puntuacion_equipo1 += 15
-            if all(value == 0 for value in Diccomposicion2.values()):
-                puntuacion_equipo2 += 15
-            
-            puntuacion_equipo1+= equipo1_obj.racha*2
-            puntuacion_equipo2+= equipo2_obj.racha*2
-    
-
             resultado = {
                 "equipo1": listajugadores1,
                 "equipo2": listajugadores2,
                 "puntuacion_equipo1": round(puntuacion_equipo1,2),
                 "puntuacion_equipo2": round(puntuacion_equipo2,2),
+                "porcentaje_victoria_equipo1": round(porcentaje_victoria_equipo1,2),
+                "porcentaje_victoria_equipo2": round(porcentaje_victoria_equipo2,2),
+                "tipo_composicion_equipo1": tipo1,
+                "tipo_composicion_equipo2": tipo2,
             }
             
             return Response(resultado, status=status.HTTP_200_OK)
@@ -168,7 +108,82 @@ class PrediccionesView(APIView):
             return Response({"error": f"No se encontró un jugador con el nombre proporcionado."}, status=status.HTTP_404_NOT_FOUND)
         except Personaje.DoesNotExist:
             return Response({"error": f"No se encontró un personaje con el nombre proporcionado."}, status=status.HTTP_404_NOT_FOUND)
-        except KeyError as e:
-            return Response({"error": f"Falta la clave en los datos de entrada: {e}"}, status=status.HTTP_400_BAD_REQUEST)
-        except Exception as e:
-            return Response({"error": f"Ocurrió un error inesperado: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+    
+def clacular_porcentaje_victoria(puntuacion_equipo1, puntuacion_equipo2,equipo_que_empieza,tipo1,tipo2):
+            puntuacion_media = (puntuacion_equipo1 + puntuacion_equipo2)
+            porcentaje_victoria_equipo1 = (puntuacion_equipo1 / puntuacion_media) * 100
+            porcentaje_victoria_equipo2 = (puntuacion_equipo2 / puntuacion_media) * 100
+            bonus_table = {
+                ('Agresiva', 'Agresiva'): 2.5,
+                ('Agresiva', 'Equilibrada'): 1.25,
+                ('Equilibrada', 'Agresiva'): 1.25,
+                ('Equilibrada', 'Defensiva'): -1.25,
+                ('Defensiva', 'Defensiva'): -2.5,
+                ('Defensiva', 'Equilibrada'): -1.25,
+            }
+            if equipo_que_empieza == 'equipo1':
+                bonus = bonus_table.get((tipo1, tipo2), 0)
+                porcentaje_victoria_equipo1 += bonus
+                porcentaje_victoria_equipo2 -= bonus
+            elif equipo_que_empieza == 'equipo2':
+                bonus = bonus_table.get((tipo2, tipo1), 0)
+                porcentaje_victoria_equipo2 += bonus
+                porcentaje_victoria_equipo1 -= bonus
+            return porcentaje_victoria_equipo1, porcentaje_victoria_equipo2
+    
+
+
+def calcular_lista_jugadores(jugadores, mapa, agentes_dict,Diccomposicion, puntuacion_ataque, puntuacion_defensa, listajugadores,equipo_obj):
+        listajugadores = []
+        puntuacion_ataque =0
+        puntuacion_defensa =0
+        for jugador_id in jugadores:
+                score = 0
+                jugador_obj = jugador.objects.get(id=jugador_id)
+                nombre_jugador = jugador_obj.nombre_jugador
+                agente_seleccionado = agentes_dict.get(nombre_jugador)
+
+                if not nombre_jugador or not agente_seleccionado:
+                    continue
+
+                agente_obj = Personaje.objects.get(nombre=agente_seleccionado)
+
+                score += (jugador_obj.puntuacion / 2.5) * 0.5
+                score += jugador_obj.Kills_per_Round * 10
+                score -= jugador_obj.Deaths_per_Round * 10
+
+                best_map = Mapa.objects.get(nombre=jugador_obj.Mejor_Mapa)
+                worst_map = Mapa.objects.get(nombre=jugador_obj.Peor_Mapa)
+                rol_recomendado = jugador_obj.Rol_Recomendado
+
+                if agente_obj.rol.strip() == rol_recomendado.strip():
+                    score += 10
+
+                if best_map.nombre == mapa:
+                    score += 10
+                elif worst_map.nombre == mapa:
+                    score -= 10
+                
+                score += jugador_obj.Opening_Kills_per_Round * 10
+                score += (jugador_obj.Kill_Cost - 4000) / 100
+                for r in Diccomposicion:
+                    if agente_obj.rol == r:
+                        Diccomposicion[r]-=1
+                if agente_obj.rol.strip() == "Duelist":
+                    puntuacion_ataque +=1
+                elif agente_obj.rol.strip() == "Controller":
+                    puntuacion_defensa += 1
+                elif agente_obj.rol.strip() == "Initiator":
+                    puntuacion_ataque += 2
+                elif agente_obj.rol.strip() == "Sentinel":
+                    puntuacion_defensa += 2
+                listajugadores.append({"nombre": nombre_jugador, "score": round(score, 2)})
+            
+                puntuacion_equipo = sum(jugador['score'] for jugador in listajugadores)/5
+                
+                if all(value == 0 for value in Diccomposicion.values()):
+                    puntuacion_equipo += 15
+                puntuacion_equipo+= equipo_obj.racha*2
+
+        return listajugadores, puntuacion_ataque, puntuacion_defensa,puntuacion_equipo

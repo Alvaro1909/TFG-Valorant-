@@ -23,6 +23,7 @@ function App() {
   const [isModalAgent, setIsModalAgent] = useState(false);
   const [maps, setMaps] = useState([]);
   const [currentMap, setCurrentMap] = useState(null);
+  const [equipoQueEmpieza, setEquipoQueEmpieza] = useState('equipo1');
 
   const fetchData = useCallback(async (url, setter) => {
     try {
@@ -100,6 +101,7 @@ function App() {
         nombre_jugador,
         nombre_agente: agent.nombre,
       })),
+      equipoQueEmpieza,
     };
 
     try {
@@ -156,16 +158,9 @@ function App() {
 
   return (
     <div className="app-container">
+    
       <style>
-        {`
-          .slick-dots li button:before {
-            color: white;
-          }
-
-          .slick-dots li.slick-active button:before {
-            color: white;
-          }
-        `}
+       
       </style>
       <div className="zones-container">
         <div className="team-zone">
@@ -259,20 +254,34 @@ function App() {
           <div className="modal-overlay-agent">
             <div className="modal-agent">
               <div className="agent-grid">
-                {agentes.map((agente) => (
-                  <div
-                    key={agente.id}
-                    className="agent-card"
-                    onClick={() => handleAgentSelect(agente)}
-                  >
-                    <img
-                      src={agente.imagen_personaje}
-                      alt={agente.nombre}
-                      className="agent-card-img"
-                    />
-                    <span className="agent-name">{agente.name}</span>
-                  </div>
-                ))}
+                {(() => {
+                  let jugadoresEquipo = [];
+                  if (jugadores1.some(j => j.nombre_jugador === targetPlayer)) {
+                    jugadoresEquipo = jugadores1;
+                  } else if (jugadores2.some(j => j.nombre_jugador === targetPlayer)) {
+                    jugadoresEquipo = jugadores2;
+                  }
+                  const agentesSeleccionados = jugadoresEquipo
+                    .filter(j => j.nombre_jugador !== targetPlayer)
+                    .map(j => selectedAgents[j.nombre_jugador]?.nombre)
+                    .filter(Boolean);
+                  return agentes
+                    .filter(agente => !agentesSeleccionados.includes(agente.nombre))
+                    .map((agente) => (
+                      <div
+                        key={agente.id}
+                        className="agent-card"
+                        onClick={() => handleAgentSelect(agente)}
+                      >
+                        <img
+                          src={agente.imagen_personaje}
+                          alt={agente.nombre}
+                          className="agent-card-img"
+                        />
+                        <span className="agent-name">{agente.name}</span>
+                      </div>
+                    ));
+                })()}
               </div>
             </div>
           </div>
@@ -285,6 +294,22 @@ function App() {
           </h2>
         )}
 
+        <div style={{ margin: '2px 0', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <label htmlFor="quien-empieza" style={{ fontWeight: 'bold' }}>¿Quién empieza?</label>
+          <select
+            id="quien-empieza"
+            value={equipoQueEmpieza}
+            onChange={e => {
+              setEquipoQueEmpieza(e.target.value);
+              setPredicciones(null);
+            }}
+            style={{ borderRadius: '6px' }}
+          >
+            <option value="equipo1">{selectedTeam1 ? selectedTeam1.nombre_equipo : 'Equipo 1'}</option>
+            <option value="equipo2">{selectedTeam2 ? selectedTeam2.nombre_equipo : 'Equipo 2'}</option>
+          </select>
+        </div>
+
         {isPredictionReady && (
           <button onClick={handlePredicciones}>Calcular Predicciones</button>
         )}
@@ -295,28 +320,45 @@ function App() {
               <p>Error: {predicciones.error}</p>
             ) : (
               <div>
-                <h3>Resultados de la Predicción</h3>
-                <div>
-                  <h4>Puntuación Equipo 1: {predicciones.puntuacion_equipo1}</h4>
-                  <ul>
-                    {predicciones.equipo1 &&
-                      predicciones.equipo1.map((p) => (
-                        <li key={p.nombre}>
-                          {p.nombre}: {p.score}
-                        </li>
-                      ))}
-                  </ul>
-                </div>
-                <div>
-                  <h4>Puntuación Equipo 2: {predicciones.puntuacion_equipo2}</h4>
-                  <ul>
-                    {predicciones.equipo2 &&
-                      predicciones.equipo2.map((p) => (
-                        <li key={p.nombre}>
-                          {p.nombre}: {p.score}
-                        </li>
-                      ))}
-                  </ul>
+                <div style={{ display: 'flex', gap: '2rem', justifyContent: 'center' }}>
+                  <div>
+                    <h4>{selectedTeam1 ? selectedTeam1.nombre_equipo : 'Equipo 1'}</h4>
+                    <span className={`tipo-composicion tipo-${predicciones.tipo_composicion_equipo1}`}>{predicciones.tipo_composicion_equipo1}</span>
+                    <div className="porcentaje-victoria" style={{ marginBottom: '8px' }}>
+                      {selectedTeam1 ? selectedTeam1.nombre_equipo : 'Equipo 1'}<br />
+                      <span style={{ fontWeight: 'bold', color: (predicciones.porcentaje_victoria_equipo1 >= predicciones.porcentaje_victoria_equipo2 ? '#43a047' : '#e53935') }}>
+                        {predicciones.porcentaje_victoria_equipo1} %
+                      </span>
+                    </div>
+                    <ul style={{ listStyle: 'none', padding: 0 }}>
+                      {predicciones.equipo1 &&
+                        predicciones.equipo1
+                          .map((p, idx) => (
+                            <li key={p.nombre} style={{ marginBottom: '8px' }}>
+                              <strong>{idx + 1}.</strong> {p.nombre} <span style={{ color: '#888' }}>({p.score})</span>
+                            </li>
+                          ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <h4>{selectedTeam2 ? selectedTeam2.nombre_equipo : 'Equipo 2'}</h4>
+                    <span className={`tipo-composicion tipo-${predicciones.tipo_composicion_equipo2}`}>{predicciones.tipo_composicion_equipo2}</span>
+                    <div className="porcentaje-victoria" style={{ marginBottom: '8px' }}>
+                      {selectedTeam2 ? selectedTeam2.nombre_equipo : 'Equipo 2'}<br />
+                      <span style={{ fontWeight: 'bold', color: (predicciones.porcentaje_victoria_equipo2 > predicciones.porcentaje_victoria_equipo1 ? '#43a047' : '#e53935') }}>
+                        {predicciones.porcentaje_victoria_equipo2} %
+                      </span>
+                    </div>
+                    <ul style={{ listStyle: 'none', padding: 0 }}>
+                      {predicciones.equipo2 &&
+                        predicciones.equipo2
+                          .map((p, idx) => (
+                            <li key={p.nombre} style={{ marginBottom: '8px' }}>
+                              <strong>{idx + 1}.</strong> {p.nombre} <span style={{ color: '#888' }}>({p.score})</span>
+                            </li>
+                          ))}
+                    </ul>
+                  </div>
                 </div>
               </div>
             )}
