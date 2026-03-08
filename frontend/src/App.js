@@ -24,6 +24,8 @@ function App() {
   const [maps, setMaps] = useState([]);
   const [currentMap, setCurrentMap] = useState(null);
   const [equipoQueEmpieza, setEquipoQueEmpieza] = useState('equipo1');
+  const [showSettingsMenu, setShowSettingsMenu] = useState(false);
+  const [toggleStates, setToggleStates] = useState({});
 
   const fetchData = useCallback(async (url, setter) => {
     try {
@@ -102,6 +104,7 @@ function App() {
         nombre_agente: agent.nombre,
       })),
       equipoQueEmpieza,
+      ajustes: toggleStates,
     };
 
     try {
@@ -231,7 +234,14 @@ function App() {
                 Selecciona tu equipo
               </h3>
               <div className="team-grid">
-                {teams.map((team) => (
+                {teams.filter((team) => {
+                  if (targetTeam === "equipo1") {
+                    return team.id !== selected2;
+                  } else if (targetTeam === "equipo2") {
+                    return team.id !== selected1;
+                  }
+                  return true;
+                }).map((team) => (
                   <div
                     key={team.id}
                     className="team-card"
@@ -287,34 +297,113 @@ function App() {
           </div>
         )}
       </div>
-      <div className="dataContainer">
-        {currentMap && (
-          <h2 aria-label={`Selected map: ${currentMap.nombre}`}>
-            {currentMap.nombre}
-          </h2>
-        )}
-
-        <div style={{ margin: '2px 0', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <label htmlFor="quien-empieza" style={{ fontWeight: 'bold' }}>¿Quién empieza?</label>
-          <select
-            id="quien-empieza"
-            value={equipoQueEmpieza}
-            onChange={e => {
-              setEquipoQueEmpieza(e.target.value);
-              setPredicciones(null);
+      <div className="dataContainer" style={{ position: 'relative' }}>
+        <button
+          onClick={() => setShowSettingsMenu(prev => !prev)}
+          style={{
+            position: 'absolute',
+            top: '8px',
+            right: '8px',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            fontSize: '18px',
+            color: '#fff'
+          }}
+          aria-label="Toggle settings menu"
+        >
+          ⋮
+        </button>
+        
+        {showSettingsMenu && (
+          <div
+            style={{
+              marginTop: '16px',
+              backgroundColor: '#f0f0f0',
+              color: '#000',
+              padding: '16px',
+              borderRadius: '8px',
             }}
-            style={{ borderRadius: '6px' }}
           >
-            <option value="equipo1">{selectedTeam1 ? selectedTeam1.nombre_equipo : 'Equipo 1'}</option>
-            <option value="equipo2">{selectedTeam2 ? selectedTeam2.nombre_equipo : 'Equipo 2'}</option>
-          </select>
-        </div>
+            <h4>Configuración:</h4>
 
-        {isPredictionReady && (
-          <button onClick={handlePredicciones}>Calcular Predicciones</button>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {[
+                'Kills por ronda',
+                'Muerte por ronda',
+                'Mejor mapa',
+                'Peor mapa',
+                'Rol recomendado',
+                'Coste de kill',
+                'Primera kill de la ronda',
+                'Composición',
+                'Racha',
+              ].map((label, index) => {
+                const id = `setting-${index}`;
+
+                return (
+                  <div
+                    key={label}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                    }}
+                  >
+                    <label htmlFor={id}>{label}</label>
+
+                    <div className="switch">
+                      <input
+                        id={id}
+                        type="checkbox"
+                        checked={toggleStates[label] === 1}
+                        onChange={(e) =>
+                          setToggleStates((prev) => ({
+                            ...prev,
+                            [label]: e.target.checked ? 1 : 0,
+                          }))
+                        }
+                      />
+                      <span className="slider"></span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+        
+        {!showSettingsMenu && (
+          <>
+            {currentMap && (
+              <h2 aria-label={`Selected map: ${currentMap.nombre}`}>
+                {currentMap.nombre}
+              </h2>
+            )}
+
+            <div style={{ margin: '2px 0', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <label htmlFor="quien-empieza" style={{ fontWeight: 'bold' }}>¿Quién empieza?</label>
+              <select
+                id="quien-empieza"
+                value={equipoQueEmpieza}
+                onChange={e => {
+                  setEquipoQueEmpieza(e.target.value);
+                  setPredicciones(null);
+                }}
+                style={{ borderRadius: '6px' }}
+              >
+                <option value="equipo1">{selectedTeam1 ? selectedTeam1.nombre_equipo : 'Equipo 1'}</option>
+                <option value="equipo2">{selectedTeam2 ? selectedTeam2.nombre_equipo : 'Equipo 2'}</option>
+              </select>
+            </div>
+
+            {isPredictionReady && (
+              <button onClick={handlePredicciones}>Calcular Predicciones</button>
+            )}
+          </>
         )}
 
-        {predicciones && (
+        {!showSettingsMenu && predicciones && (
           <div className="predicciones-resultado">
             {predicciones.error ? (
               <p>Error: {predicciones.error}</p>

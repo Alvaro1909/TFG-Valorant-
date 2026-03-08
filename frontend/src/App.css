@@ -168,3 +168,48 @@ body {
   box-shadow: 0 2px 8px rgba(60,60,100,0.12);
   letter-spacing: 1px;
 }
+
+/* Switch/Slider styles - Simple working version */
+.switch {
+  position: relative;
+  display: inline-block;
+}
+
+.switch input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 60px;
+  height: 30px;
+  background-color: #ccc;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  position: relative;
+  outline: none;
+}
+
+.switch input[type="checkbox"]:before {
+  content: "";
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-color: white;
+  top: 4px;
+  left: 4px;
+  transition: left 0.3s ease;
+}
+
+.switch input[type="checkbox"]:checked {
+  background-color: #43a047;
+}
+
+.switch input[type="checkbox"]:checked:before {
+  left: 34px;
+}
+
+.switch .slider {
+  display: none;
+}
