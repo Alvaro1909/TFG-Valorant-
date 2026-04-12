@@ -6,7 +6,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-const API_BASE_URL = "/api";
+const API_BASE_URL = "http://localhost:8000/api";
 
 function App() {
   const [teams, setTeams] = useState([]);
@@ -332,7 +332,7 @@ function App() {
                 'Kills por ronda',
                 'Muerte por ronda',
                 'Mejor mapa',
-                'Peor mapa',
+                'Peor mapa',  
                 'Rol recomendado',
                 'Coste de kill',
                 'Primera kill de la ronda',
