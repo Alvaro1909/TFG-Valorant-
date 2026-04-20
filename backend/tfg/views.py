@@ -179,7 +179,7 @@ def calcular_lista_jugadores(jugadores, mapa, agentes_dict,Diccomposicion, puntu
                 score -= 10 * multiplicador_peor_mapa
                 
             score += jugador_obj.Opening_Kills_per_Round * 10 * multiplicador_opening_kills
-            score += (jugador_obj.Kill_Cost - 4000) / 100 * multiplicador_kill_cost
+            score -= (jugador_obj.Kill_Cost - 4000) / 100 * multiplicador_kill_cost
             
             for r in Diccomposicion:
                 if agente_obj.rol == r:
