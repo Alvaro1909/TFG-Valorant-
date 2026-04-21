@@ -86,8 +86,24 @@ class PrediccionesView(APIView):
                "Controlador":mapa_actual.numero_Controlador}
 
             
-            listajugadores1,puntuacion_ataque_1,puntuacion_defensa_1, puntuacion_equipo1= calcular_lista_jugadores(jugadores1, mapa, agentes_dict,Diccomposicion1, puntuacion_ataque_1, puntuacion_defensa_1, listajugadores1,equipo1_obj, ajustes)
-            listajugadores2,puntuacion_ataque_2,puntuacion_defensa_2, puntuacion_equipo2= calcular_lista_jugadores(jugadores2, mapa, agentes_dict,Diccomposicion2, puntuacion_ataque_2, puntuacion_defensa_2, listajugadores2,equipo2_obj, ajustes)
+            # Construir listas de nombres de agentes para los equipos
+            agentes_equipo1 = []
+            agentes_equipo2 = []
+            
+            for jid in jugadores1:
+                nombre_jugador = jugador.objects.get(id=jid).nombre_jugador
+                agente = agentes_dict.get(nombre_jugador)
+                if agente:
+                    agentes_equipo1.append(agente)
+            
+            for jid in jugadores2:
+                nombre_jugador = jugador.objects.get(id=jid).nombre_jugador
+                agente = agentes_dict.get(nombre_jugador)
+                if agente:
+                    agentes_equipo2.append(agente)
+            
+            listajugadores1,puntuacion_ataque_1,puntuacion_defensa_1, puntuacion_equipo1= calcular_lista_jugadores(jugadores1, mapa, agentes_dict,Diccomposicion1, puntuacion_ataque_1, puntuacion_defensa_1, listajugadores1,equipo1_obj, ajustes, agentes_equipo2)
+            listajugadores2,puntuacion_ataque_2,puntuacion_defensa_2, puntuacion_equipo2= calcular_lista_jugadores(jugadores2, mapa, agentes_dict,Diccomposicion2, puntuacion_ataque_2, puntuacion_defensa_2, listajugadores2,equipo2_obj, ajustes, agentes_equipo1)
 
             equipo_que_empieza = request.data.get('equipoQueEmpieza')           
             tipo1 = self.tipo_composicion(puntuacion_ataque_1, puntuacion_defensa_1)
@@ -137,9 +153,11 @@ def clacular_porcentaje_victoria(puntuacion_equipo1, puntuacion_equipo2,equipo_q
     
 
 
-def calcular_lista_jugadores(jugadores, mapa, agentes_dict,Diccomposicion, puntuacion_ataque, puntuacion_defensa, listajugadores,equipo_obj, ajustes=None):
+def calcular_lista_jugadores(jugadores, mapa, agentes_dict,Diccomposicion, puntuacion_ataque, puntuacion_defensa, listajugadores,equipo_obj, ajustes=None, agentes_contrarios=None):
         if ajustes is None:
             ajustes = {}
+        if agentes_contrarios is None:
+            agentes_contrarios = []
         
         listajugadores = []
         puntuacion_ataque =0
@@ -154,6 +172,7 @@ def calcular_lista_jugadores(jugadores, mapa, agentes_dict,Diccomposicion, puntu
         multiplicador_opening_kills = 1 if ajustes.get('Primera kill de la ronda') == 1 else 0
         multiplicador_composicion = 1 if ajustes.get('Composición') == 1 else 0
         multiplicador_racha = 1 if ajustes.get('Racha') == 1 else 0
+        multiplicador_counters = 1 if ajustes.get('Counters') == 1 else 0
         
         for jugador_id in jugadores:
             score = 0
@@ -180,6 +199,23 @@ def calcular_lista_jugadores(jugadores, mapa, agentes_dict,Diccomposicion, puntu
                 
             score += jugador_obj.Opening_Kills_per_Round * 10 * multiplicador_opening_kills
             score -= (jugador_obj.Kill_Cost - 4000) / 100 * multiplicador_kill_cost
+            
+            penalizacion_counter = 0
+            if multiplicador_counters == 1 and agentes_contrarios:
+                for agente_contrario_nombre in agentes_contrarios:
+                    if agente_contrario_nombre:
+                        try:
+                            agente_contrario = Personaje.objects.get(nombre=agente_contrario_nombre)
+                            
+                            if agente_seleccionado in [agente_contrario.counter1, agente_contrario.counter2]:
+                                penalizacion_counter -= 5 
+                            
+                            if agente_contrario_nombre in [agente_obj.counter1, agente_obj.counter2]:
+                                penalizacion_counter += 5  
+                        except Personaje.DoesNotExist:
+                            pass
+            
+            score += penalizacion_counter
             
             for r in Diccomposicion:
                 if agente_obj.rol == r:

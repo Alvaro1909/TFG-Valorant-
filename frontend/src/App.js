@@ -338,6 +338,7 @@ function App() {
                 'Primera kill de la ronda',
                 'Composición',
                 'Racha',
+                'Counters',
               ].map((label, index) => {
                 const id = `setting-${index}`;
 
