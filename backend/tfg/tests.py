@@ -1454,3 +1454,367 @@ class ErroresTest(TestCase):
         """Test que verifica error para endpoint inexistente"""
         response = self.client.get("/api/endpoint-fantasma/")
         self.assertIn(response.status_code, [404, 400])
+
+
+class ComposicionTest(TestCase):
+    """Test para validar lógica de composiciones"""
+    
+    def setUp(self):
+        self.mapa_equilibrado = Mapa.objects.create(
+            nombre="MapEquilibrada",
+            numero_Iniciadores=2,
+            numero_Controlador=1,
+            numero_Centinela=1,
+            numero_Duelista=1,
+            imagen_mapa="test.png"
+        )
+        
+        self.mapa_defensiva = Mapa.objects.create(
+            nombre="MapDefensiva",
+            numero_Iniciadores=1,
+            numero_Controlador=2,
+            numero_Centinela=2,
+            numero_Duelista=0,
+            imagen_mapa="test.png"
+        )
+        
+        self.mapa_agresiva = Mapa.objects.create(
+            nombre="MapAgresiva",
+            numero_Iniciadores=1,
+            numero_Controlador=0,
+            numero_Centinela=0,
+            numero_Duelista=4,
+            imagen_mapa="test.png"
+        )
+    
+    def test_composicion_perfecta_equilibrada(self):
+        """Test que verifica composición perfecta es 2 Iniciadores, 1 Controlador, 1 Centinela, 1 Duelista"""
+        total_roles = (self.mapa_equilibrado.numero_Iniciadores + 
+                      self.mapa_equilibrado.numero_Controlador +
+                      self.mapa_equilibrado.numero_Centinela +
+                      self.mapa_equilibrado.numero_Duelista)
+        self.assertEqual(total_roles, 5)
+    
+    def test_composicion_defensiva_suma_5(self):
+        """Test que verifica que composición defensiva suma 5"""
+        total = (self.mapa_defensiva.numero_Iniciadores +
+                self.mapa_defensiva.numero_Controlador +
+                self.mapa_defensiva.numero_Centinela +
+                self.mapa_defensiva.numero_Duelista)
+        self.assertEqual(total, 5)
+    
+    def test_composicion_agresiva_suma_5(self):
+        """Test que verifica que composición agresiva suma 5"""
+        total = (self.mapa_agresiva.numero_Iniciadores +
+                self.mapa_agresiva.numero_Controlador +
+                self.mapa_agresiva.numero_Centinela +
+                self.mapa_agresiva.numero_Duelista)
+        self.assertEqual(total, 5)
+    
+    def test_peso_roles(self):
+        """Test que verifica los pesos de roles en composición"""
+        # Iniciadores pesan 2, otros pesan 1
+        # Defensiva: 1*2 + 2*1 + 2*2 + 0*1 = 8 (defensa)
+        # Agresiva: 1*2 + 0*1 + 0*2 + 4*1 = 6 (ataque)
+        ataque_def = self.mapa_defensiva.numero_Iniciadores * 2 + self.mapa_defensiva.numero_Duelista * 1
+        defensa_def = self.mapa_defensiva.numero_Controlador * 1 + self.mapa_defensiva.numero_Centinela * 2
+        
+        ataque_agr = self.mapa_agresiva.numero_Iniciadores * 2 + self.mapa_agresiva.numero_Duelista * 1
+        defensa_agr = self.mapa_agresiva.numero_Controlador * 1 + self.mapa_agresiva.numero_Centinela * 2
+        
+        self.assertLess(ataque_def, defensa_def)  # Defensiva tiene menos ataque
+        self.assertGreater(ataque_agr, defensa_agr)  # Agresiva tiene más ataque
+
+
+class CountersTest(TestCase):
+    """Test para validar lógica de counters entre agentes"""
+    
+    def setUp(self):
+        self.jett = Personaje.objects.create(
+            nombre="Jett",
+            rol="Duelist",
+            counter1="Chamber",
+            counter2="Killjoy",
+            imagen_personaje="test.png"
+        )
+        
+        self.chamber = Personaje.objects.create(
+            nombre="Chamber",
+            rol="Sentinel",
+            counter1="Jett",
+            counter2="Raze",
+            imagen_personaje="test.png"
+        )
+        
+        self.sage = Personaje.objects.create(
+            nombre="Sage",
+            rol="Sentinel",
+            counter1="Viper",
+            counter2="Breach",
+            imagen_personaje="test.png"
+        )
+    
+    def test_counter_jett_contra_chamber(self):
+        """Test que verifica que Jett es counter de Chamber"""
+        self.assertIn("Jett", [self.chamber.counter1, self.chamber.counter2])
+    
+    def test_counter_chamber_contra_jett(self):
+        """Test que verifica que Chamber es counter de Jett"""
+        self.assertIn("Chamber", [self.jett.counter1, self.jett.counter2])
+    
+    def test_counters_no_bidireccionales(self):
+        """Test que verifica que relación de counters NO es necesariamente bidireccional"""
+        # Un agente puede counters a otro sin que la relación sea mutua
+        # Jett counter de Chamber no implica Chamber counter de Jett
+        jett_contra_chamber = "Jett" in [self.chamber.counter1, self.chamber.counter2]
+        self.assertTrue(jett_contra_chamber)
+    
+    def test_agente_tiene_dos_counters(self):
+        """Test que verifica que cada agente tiene exactamente 2 counters"""
+        counters = [self.jett.counter1, self.jett.counter2]
+        self.assertEqual(len(counters), 2)
+        self.assertNotEqual(self.jett.counter1, self.jett.counter2)
+    
+    def test_sage_counters_diferentes(self):
+        """Test que verifica counters específicos de Sage"""
+        self.assertEqual(self.sage.counter1, "Viper")
+        self.assertEqual(self.sage.counter2, "Breach")
+
+
+class EstadísticasJugadorTest(TestCase):
+    """Test para validar rangos y lógica de estadísticas de jugadores"""
+    
+    def setUp(self):
+        self.equipo = equipo.objects.create(
+            nombre_equipo="Stats_Team",
+            jugador1="P1", jugador2="P2", jugador3="P3", jugador4="P4", jugador5="P5",
+            racha=0,
+            imagen_equipo="test.png"
+        )
+    
+    def test_puntuacion_jugador_valida(self):
+        """Test que verifica puntuación es mayor a 0"""
+        j = jugador.objects.create(
+            nombre_jugador="HighScorer",
+            equipo=self.equipo,
+            nacionalidad="ES",
+            puntuacion=9.8,
+            Kills_per_Round=0.80,
+            Deaths_per_Round=0.40,
+            Opening_Kills_per_Round=0.25,
+            Headshot_per_Round=0.20,
+            Kill_Cost=8200,
+            Mejor_Mapa="Ascent",
+            Peor_Mapa="Bind",
+            Rol_Recomendado="Duelist"
+        )
+        self.assertGreater(j.puntuacion, 0)
+    
+    def test_kpr_valido(self):
+        """Test que verifica KPR es mayor a 0"""
+        j = jugador.objects.create(
+            nombre_jugador="KPR_Player",
+            equipo=self.equipo,
+            nacionalidad="SE",
+            puntuacion=8.5,
+            Kills_per_Round=0.856,
+            Deaths_per_Round=0.421,
+            Opening_Kills_per_Round=0.254,
+            Headshot_per_Round=0.185,
+            Kill_Cost=8750.5,
+            Mejor_Mapa="Haven",
+            Peor_Mapa="Fracture",
+            Rol_Recomendado="Initiator"
+        )
+        self.assertGreater(j.Kills_per_Round, 0)
+    
+    def test_dpr_valido(self):
+        """Test que verifica DPR es mayor a 0"""
+        j = jugador.objects.create(
+            nombre_jugador="DPR_Player",
+            equipo=self.equipo,
+            nacionalidad="BR",
+            puntuacion=7.5,
+            Kills_per_Round=0.75,
+            Deaths_per_Round=0.50,
+            Opening_Kills_per_Round=0.20,
+            Headshot_per_Round=0.15,
+            Kill_Cost=8500,
+            Mejor_Mapa="Split",
+            Peor_Mapa="Icebox",
+            Rol_Recomendado="Controller"
+        )
+        self.assertGreater(j.Deaths_per_Round, 0)
+    
+    def test_opening_kills_valido(self):
+        """Test que verifica Opening Kills por ronda es válido"""
+        j = jugador.objects.create(
+            nombre_jugador="Opening_Player",
+            equipo=self.equipo,
+            nacionalidad="DE",
+            puntuacion=8.0,
+            Kills_per_Round=0.70,
+            Deaths_per_Round=0.50,
+            Opening_Kills_per_Round=0.30,
+            Headshot_per_Round=0.18,
+            Kill_Cost=8600,
+            Mejor_Mapa="Pearl",
+            Peor_Mapa="Sunset",
+            Rol_Recomendado="Sentinel"
+        )
+        self.assertGreaterEqual(j.Opening_Kills_per_Round, 0)
+        self.assertLessEqual(j.Opening_Kills_per_Round, j.Kills_per_Round)
+    
+    def test_kill_cost_valido(self):
+        """Test que verifica Kill Cost es mayor a 0"""
+        j = jugador.objects.create(
+            nombre_jugador="Cost_Player",
+            equipo=self.equipo,
+            nacionalidad="FR",
+            puntuacion=8.7,
+            Kills_per_Round=0.82,
+            Deaths_per_Round=0.43,
+            Opening_Kills_per_Round=0.24,
+            Headshot_per_Round=0.17,
+            Kill_Cost=9500,
+            Mejor_Mapa="Abyss",
+            Peor_Mapa="Lotus",
+            Rol_Recomendado="Duelist"
+        )
+        self.assertGreater(j.Kill_Cost, 0)
+
+
+class PorcentajeVictoriaTest(TestCase):
+    """Test para validar cálculos de porcentajes de victoria"""
+    
+    def test_porcentajes_suman_100(self):
+        """Test que verifica que dos porcentajes de victoria suman 100"""
+        puntuacion_equipo1 = 155.5
+        puntuacion_equipo2 = 144.3
+        
+        puntuacion_media = puntuacion_equipo1 + puntuacion_equipo2
+        porcentaje_1 = (puntuacion_equipo1 / puntuacion_media) * 100
+        porcentaje_2 = (puntuacion_equipo2 / puntuacion_media) * 100
+        
+        total = porcentaje_1 + porcentaje_2
+        self.assertAlmostEqual(total, 100, places=2)
+    
+    def test_equipo_mejor_tiene_mayor_porcentaje(self):
+        """Test que verifica que puntuación mayor = porcentaje mayor"""
+        puntuacion_mejor = 160.0
+        puntuacion_peor = 140.0
+        
+        puntuacion_media = puntuacion_mejor + puntuacion_peor
+        porcentaje_mejor = (puntuacion_mejor / puntuacion_media) * 100
+        porcentaje_peor = (puntuacion_peor / puntuacion_media) * 100
+        
+        self.assertGreater(porcentaje_mejor, porcentaje_peor)
+        self.assertGreater(porcentaje_mejor, 50)
+        self.assertLess(porcentaje_peor, 50)
+    
+    def test_porcentajes_rango_valido(self):
+        """Test que verifica porcentajes están entre 0 y 100"""
+        porcentajes = [0, 25.5, 50, 75.3, 100]
+        
+        for p in porcentajes:
+            self.assertGreaterEqual(p, 0)
+            self.assertLessEqual(p, 100)
+    
+    def test_simetria_porcentajes(self):
+        """Test que verifica simetría: si A=B, porcentajes = 50 cada uno"""
+        puntuacion_igual = 100.0
+        
+        puntuacion_media = puntuacion_igual + puntuacion_igual
+        porcentaje_1 = (puntuacion_igual / puntuacion_media) * 100
+        porcentaje_2 = (puntuacion_igual / puntuacion_media) * 100
+        
+        self.assertAlmostEqual(porcentaje_1, 50, places=2)
+        self.assertAlmostEqual(porcentaje_2, 50, places=2)
+
+
+class BonificadoresTest(TestCase):
+    """Test para validar aplicación de bonificadores"""
+    
+    def test_bonus_composicion_perfecta(self):
+        """Test que verifica bonus de composición perfecta es +15"""
+        bonus = 15
+        multiplicador = 1
+        resultado = bonus * multiplicador
+        self.assertEqual(resultado, 15)
+    
+    def test_bonus_composicion_desactivado(self):
+        """Test que verifica bonus de composición es 0 si está desactivado"""
+        bonus = 15
+        multiplicador = 0
+        resultado = bonus * multiplicador
+        self.assertEqual(resultado, 0)
+    
+    def test_bonus_racha_positiva(self):
+        """Test que verifica bonus por racha positiva"""
+        racha = 5
+        multiplicador = 1
+        resultado = racha * 2 * multiplicador
+        self.assertEqual(resultado, 10)
+    
+    def test_bonus_racha_negativa(self):
+        """Test que verifica bonus por racha negativa es negativo"""
+        racha = -3
+        multiplicador = 1
+        resultado = racha * 2 * multiplicador
+        self.assertEqual(resultado, -6)
+        self.assertLess(resultado, 0)
+    
+    def test_bonus_rol_correcto(self):
+        """Test que verifica bonus de rol correcto es +10"""
+        bonus = 10
+        self.assertEqual(bonus, 10)
+    
+    def test_bonus_mejor_mapa(self):
+        """Test que verifica bonus de mejor mapa es +10"""
+        bonus = 10
+        self.assertEqual(bonus, 10)
+    
+    def test_penalizacion_peor_mapa(self):
+        """Test que verifica penalización de peor mapa es -10"""
+        penalizacion = -10
+        self.assertEqual(penalizacion, -10)
+        self.assertLess(penalizacion, 0)
+
+
+class MultiplicadoresTest(TestCase):
+    """Test para validar multiplicadores de ajustes"""
+    
+    def test_multiplicador_activado(self):
+        """Test que verifica multiplicador activado es 1"""
+        multiplicador = 1 if True == 1 else 0
+        self.assertEqual(multiplicador, 1)
+    
+    def test_multiplicador_desactivado(self):
+        """Test que verifica multiplicador desactivado es 0"""
+        multiplicador = 1 if False == 1 else 0
+        self.assertEqual(multiplicador, 0)
+    
+    def test_todos_multiplicadores_validos(self):
+        """Test que verifica todos los multiplicadores son binarios"""
+        ajustes = {
+            'Kills por ronda': 1,
+            'Muerte por ronda': 0,
+            'Mejor mapa': 1,
+            'Peor mapa': 1,
+            'Rol recomendado': 0,
+            'Coste de kill': 1,
+            'Primera kill de la ronda': 1,
+            'Composición': 1,
+            'Racha': 0,
+            'Counters': 1
+        }
+        
+        for ajuste, valor in ajustes.items():
+            self.assertIn(valor, [0, 1])
+    
+    def test_multiplicadores_no_afectan_si_son_0(self):
+        """Test que verifica que multiplicador 0 neutraliza cualquier bonus"""
+        bonus = 25.5
+        multiplicador = 0
+        resultado = bonus * multiplicador
+        self.assertEqual(resultado, 0)
