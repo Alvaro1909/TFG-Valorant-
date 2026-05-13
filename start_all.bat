@@ -72,7 +72,7 @@ REM Instalar npm deps si no existen
 if not exist node_modules (
     echo    [AVISO] node_modules no encontrado. Instalando...
     echo    (Esto puede tardar unos minutos, por favor espere...)
-    call npm install
+    call npm install --silent >nul 2>&1
 )
 
 echo   Frontend: http://localhost:3000
