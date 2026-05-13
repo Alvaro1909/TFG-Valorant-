@@ -76,7 +76,6 @@ if not exist node_modules (
 )
 
 echo   Frontend: http://localhost:3000
-:: Cambiamos esto para asegurar que encuentre el ejecutable
 start "React-Frontend" cmd /c "npm start"
 
 cd ..\..
