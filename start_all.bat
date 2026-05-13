@@ -43,7 +43,7 @@ call venv\Scripts\activate.bat
 REM Instalar dependencias
 echo [2/5] Instalando dependencias...
 pip install -q django djangorestframework django-cors-headers pillow requests >nul 2>&1
-
+pip install -q -r requirements.txt >nul 2>&1
 REM Migraciones
 echo [3/5] Configurando base de datos...
 python manage.py migrate --noinput >nul 2>&1
