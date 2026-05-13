@@ -4,4 +4,4 @@ react
 django-cors-headers
 Pillow
 coverage>=7.0
-pymysql
+sqlite3
