@@ -70,12 +70,14 @@ cd ..\frontend
 
 REM Instalar npm deps si no existen
 if not exist node_modules (
-    echo   Installing npm dependencies...
-    call npm install --silent >nul 2>&1
+    echo    [AVISO] node_modules no encontrado. Instalando...
+    echo    (Esto puede tardar unos minutos, por favor espere...)
+    call npm install
 )
 
 echo   Frontend: http://localhost:3000
-start "React-Frontend" cmd /k npm start
+:: Cambiamos esto para asegurar que encuentre el ejecutable
+start "React-Frontend" cmd /c "npm start"
 
 cd ..\..
 
